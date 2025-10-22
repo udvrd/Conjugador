@@ -1,6 +1,6 @@
 import tkinter as tk
 from translate import translate_hu_to_es, translate_es_to_hu
-from conjugate import conjugate_presente
+from conjugate import conjugate_presente, SpanishVerb
 
 
 def output():
@@ -26,6 +26,13 @@ def output():
         return
     conjugate_presente(verb_es)
     conjugation_label.config(text=f"Ragozás eredménye: {verb_es}", fg="yellow")
+
+    '''verb_to_conjugate = SpanishVerb(verb_es)
+    print("Infinitive:", verb_to_conjugate.infinitive)
+    print("Reflexive:", verb_to_conjugate.is_reflexive)
+    print("Group:", verb_to_conjugate.group)
+    print("Is irregular:", verb_to_conjugate.is_irregular)
+    print("Stem (presente):", verb_to_conjugate.stemPresente)'''
 
 
 
