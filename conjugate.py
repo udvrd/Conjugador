@@ -17,10 +17,14 @@ def conjugate_presente(verb_es):
         elif verb.group == "er":
             if "oy" in verb.irregular:
                 return ["oy", "es", "s", "omos", "ois", "on"]
+            elif "e" in verb.irregular:
+                return ["eo", "es", "e", "emos", "eis", "en"]
             else:
                 return ["o", "es", "e", "emos", "éis", "en"]
         elif verb.group == "ir":
-               return ["o", "es", "e", "imos", "ís", "en"]
+            if "eí" in verb.irregular:
+                return ["o", "es", "e", "ímos", "ís", "en"]
+            return ["o", "es", "e", "imos", "ís", "en"]
     endings = get_endings(verb)
 
     forms = [f"{person} {s}{ending}" for person, s, ending in zip(persons, stem, endings)]
@@ -52,6 +56,10 @@ class SpanishVerb:
             return ["v"] * 6
         elif infinitive == "ser":
             return ["s", "er", "e", "s", "s", "s"]
+        elif infinitive == "oler":
+            return ["huel", "huel", "huel", "ol", "ol", "huel"]
+        if infinitive == "caber":
+            return ["quep"] + [infinitive[:-2]] * 5
         elif "ig" in self.irregular:
             stem = infinitive[:-2]
             if "y" in self.irregular:
@@ -107,12 +115,33 @@ class SpanishVerb:
                 return s[:index] + "i" + s[index + 1:] if index != -1 else s
             stem_list = [apply_ie_shift(yo_form), apply_ie_shift(stem), apply_ie_shift(stem), stem, stem, apply_ie_shift(stem)]
             return stem_list
+        elif "g2" in self.irregular:
+            stem = infinitive[:-2]
+            return [stem[:-1] + "g"] + [stem] * 5
         elif "g" in self.irregular:
             stem = infinitive[:-2]
             return [stem + "g"] + [stem] * 5
         elif "zo" in self.irregular:
             stem = infinitive[:-2]
             return [stem[:-1] + "z"] + [stem] * 5
+        elif "y" in self.irregular:
+            stem = infinitive[:-2] + "y"
+            stem_list = [stem, stem, stem, stem[:-1], stem[:-1], stem]
+            return stem_list
+        elif "ií" in self.irregular:
+            stem = infinitive[:-2]
+            def apply_ii_shift(s):
+                index = s.rfind("i")
+                return s[:index] + "í" + s[index + 1:] if index != -1 else s
+            stem_list = [apply_ii_shift(stem), apply_ii_shift(stem), apply_ii_shift(stem), stem, stem, apply_ii_shift(stem)]
+            return stem_list
+        elif "eí" in self.irregular:
+            stem = infinitive[:-2]
+            def apply_ei_shift(s):
+                index = s.rfind("e")
+                return s[:index] + "í" + s[index + 1:] if index != -1 else s
+            stem_list = [apply_ei_shift(stem), apply_ei_shift(stem), apply_ei_shift(stem), stem, stem, apply_ei_shift(stem)]
+            return stem_list
         else:
             stem = infinitive[:-2]
             return [stem] * 6
