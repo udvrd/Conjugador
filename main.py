@@ -14,25 +14,24 @@ def output():
             result_label.config(text="Nincs fordítás az adatbázisban!", fg="red")
 
 
-    elif verb.endswith(("ar", "er", "ir", "arse", "erse", "irse")):
+    elif verb.endswith(("ar", "er", "ir", "ír", "arse", "erse", "irse", "írse")):
         verb_es = verb
         verb_hu = translate_es_to_hu(verb_es)
         result_label.config(text=f"Az ige magyarul: {verb_hu}", fg="black")
-        # Itt majd meghívod a conjugate_present(verb_es) függvényt
-
 
     else:
         result_label.config(text="Nem ige vagy helytelen alak!", fg="red")
         return
     conjugate_presente(verb_es)
-    conjugation_label.config(text=f"Ragozás eredménye: {verb_es}", fg="yellow")
+    conjugation_label.config(text=f"Ragozás eredménye:\n {(conjugate_presente(verb_es))}", fg="darkblue")
 
-    '''verb_to_conjugate = SpanishVerb(verb_es)
+    verb_to_conjugate = SpanishVerb(verb_es)
     print("Infinitive:", verb_to_conjugate.infinitive)
     print("Reflexive:", verb_to_conjugate.is_reflexive)
     print("Group:", verb_to_conjugate.group)
-    print("Is irregular:", verb_to_conjugate.is_irregular)
-    print("Stem (presente):", verb_to_conjugate.stemPresente)'''
+    print("irregular type:", verb_to_conjugate.irregular)
+    print("Stem (presente):", verb_to_conjugate.stemPresente)
+    print(conjugate_presente(verb_es))
 
 
 

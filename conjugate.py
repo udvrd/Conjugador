@@ -3,82 +3,144 @@ from openpyxl import load_workbook
 
 def conjugate_presente(verb_es):
     verb = SpanishVerb(verb_es)
-
-    if verb.is_irregular:
-        return f"{verb_es}: coming soon (irregular)"
-
-    if verb.group == "ar":
-        return conjugate_presente_ar(verb)
-    elif verb.group == "er":
-        return conjugate_presente_er(verb)
-    elif verb.group == "ir":
-        return conjugate_presente_ir(verb)
-
-def conjugate_presente_ar(verb):
+    persons = get_persons(verb)
     stem = verb.stemPresente
-    endings = ["o", "as", "a", "amos", "áis", "an"]
-    persons = ["yo", "tú", "él/ella", "nosotros", "vosotros", "ellos/ellas"]
+    def get_endings(verb):
+        if verb.group == "ar":
+            if "oy" in verb.irregular:
+                if verb.stemPresente in ["v", "d"]:
+                    return ["oy", "as", "a", "amos", "ais", "an"]
+                else:
+                    return ["oy", "as", "a", "amos", "áis", "an"]
+            else:
+                return ["o", "as", "a", "amos", "áis", "an"]
+        elif verb.group == "er":
+            if "oy" in verb.irregular:
+                return ["oy", "es", "s", "omos", "ois", "on"]
+            else:
+                return ["o", "es", "e", "emos", "éis", "en"]
+        elif verb.group == "ir":
+               return ["o", "es", "e", "imos", "ís", "en"]
+    endings = get_endings(verb)
 
-    forms = [f"{person} {stem}{ending}" for person, ending in zip(persons, endings)]
+    forms = [f"{person} {s}{ending}" for person, s, ending in zip(persons, stem, endings)]
     return "\n".join(forms)
 
-def conjugate_presente_er(verb):
-    stem = verb.stemPresente
-    endings = ["o", "es", "e", "emos", "éis", "en"]
-    persons = ["yo", "tú", "él/ella", "nosotros", "vosotros", "ellos/ellas"]
-
-    forms = [f"{person} {stem}{ending}" for person, ending in zip(persons, endings)]
-    return "\n".join(forms)
-
-def conjugate_presente_ir(verb):
-    stem = verb.stemPresente
-    endings = ["o", "es", "e", "imos", "ís", "en"]
-    persons = ["yo", "tú", "él/ella", "nosotros", "vosotros", "ellos/ellas"]
-
-    forms = [f"{person} {stem}{ending}" for person, ending in zip(persons, endings)]
-    return "\n".join(forms)
+def get_persons(verb):
+    if verb.is_reflexive:
+        return ["yo me", "tú te", "él/ella se", "nosotros nos", "vosotros os", "ellos/ellas se"]
+    else:
+        return ["yo", "tú", "él/ella", "nosotros", "vosotros", "ellos/ellas"]
 
 class SpanishVerb:
+
     def __init__(self, infinitive):
         self.infinitive = infinitive.strip().lower()
         self.is_reflexive = self.infinitive.endswith("se")
         self.group = self._get_group()
-        self.is_irregular = self._is_irregular()
+        self.irregular = self._get_irregular_tags()
+        self.stemPresente = self._get_stemPresente()
 
-        if self.is_irregular:
-            self.stemPresente = self._get_irregularStem()  # később bővíthető
-        else:
-            self.stemPresente = self._get_regularStem()
+    def is_reflexive_verb(self):
+        return self.is_reflexive
 
-    def _get_irregularStem(self):
-        return "coming soon"
-
-    def _get_regularStem(self):
+    def _get_stemPresente(self):
+        infinitive = self.infinitive
         if self.is_reflexive:
-            return self.infinitive[:-4]
-        return self.infinitive[:-2]
+            infinitive = infinitive[:-2]
+        if infinitive == "ir":
+            return ["v"] * 6
+        elif infinitive == "ser":
+            return ["s", "er", "e", "s", "s", "s"]
+        elif "ig" in self.irregular:
+            stem = infinitive[:-2]
+            if "y" in self.irregular:
+                stem_list = [stem + "ig", stem + "y", stem + "y", stem, stem, stem + "y"]
+                return stem_list
+            else:
+                return [stem + "ig"] + [stem] * 5
+        elif "zco" in self.irregular:
+            stem = infinitive[:-2]
+            return [stem[:-1] + "zc"] + [stem] * 5
+        elif "ngo" in self.irregular:
+            stem = infinitive[:-2]
+            yo_form = stem + "g"
+            if "eie" in self.irregular:
+                def apply_ie_shift(s):
+                    index = s.rfind("e")
+                    return s[:index] + "ie" + s[index + 1:] if index != -1 else s
+                stem_list = [yo_form, apply_ie_shift(stem), apply_ie_shift(stem), stem, stem, apply_ie_shift(stem)]
+                return stem_list
+            else: return [yo_form] + [stem] * 5
+        elif "eie" in self.irregular:
+            stem = infinitive[:-2]
+            def apply_ie_shift(s):
+                index = s.rfind("e")
+                return s[:index] + "ie" + s[index + 1:] if index != -1 else s
+            stem_list = [apply_ie_shift(stem), apply_ie_shift(stem), apply_ie_shift(stem), stem, stem, apply_ie_shift(stem)]
+            return stem_list
+        elif "oue" in self.irregular:
+            yo_form =stem = infinitive[:-2]
+            if "zo" in self.irregular: yo_form = infinitive[:-3] + "z"
+            def apply_ue_shift(s):
+                index = s.rfind("o")
+                return s[:index] + "ue" + s[index + 1:] if index != -1 else s
+            stem_list = [apply_ue_shift(yo_form), apply_ue_shift(stem), apply_ue_shift(stem), stem, stem, apply_ue_shift(stem)]
+            return stem_list
+        elif "j" in self.irregular:
+            stem = infinitive[:-2]
+            yo_form = infinitive[:-3] + "j"
+            if "ei" in self.irregular:
+                def apply_i_shift(s):
+                    index = s.rfind("e")
+                    return s[:index] + "i" + s[index + 1:] if index != -1 else s
+                stem_list = [apply_i_shift(yo_form), apply_i_shift(stem), apply_i_shift(stem), stem, stem, apply_i_shift(stem)]
+                return stem_list
+            else: return [yo_form] + [stem] * 5
+        elif "ei" in self.irregular:
+            stem = infinitive[:-2]
+            yo_form = infinitive[:-2]
+            if "g" in self.irregular: yo_form = stem[:-1] + "g"
+            elif "um" in self.irregular: yo_form = stem[:-1]
+            def apply_ie_shift(s):
+                index = s.rfind("e")
+                return s[:index] + "i" + s[index + 1:] if index != -1 else s
+            stem_list = [apply_ie_shift(yo_form), apply_ie_shift(stem), apply_ie_shift(stem), stem, stem, apply_ie_shift(stem)]
+            return stem_list
+        elif "g" in self.irregular:
+            stem = infinitive[:-2]
+            return [stem + "g"] + [stem] * 5
+        elif "zo" in self.irregular:
+            stem = infinitive[:-2]
+            return [stem[:-1] + "z"] + [stem] * 5
+        else:
+            stem = infinitive[:-2]
+            return [stem] * 6
+
 
     def _get_group(self):
-        if self.infinitive.endswith(("ar", "arse")):
+        infinitive = self.infinitive
+
+        if infinitive in ["ir", "irse"]:
             return "ar"
-        elif self.infinitive.endswith(("er", "erse")):
+        elif infinitive.endswith(("ar", "arse")):
+            return "ar"
+        elif infinitive.endswith(("er", "erse")):
             return "er"
         else:
             return "ir"
 
-    def _is_irregular(self):
+    def _get_irregular_tags(self):
         verb_es = self.infinitive.strip().lower()
         wb = load_workbook("verbos.xlsx")
         ws = wb["verbos"]
 
-        for row in ws.iter_rows(min_row=3):  # feltételezve, hogy az első 2 sor fejléc
-            cell_value = str(row[1].value).strip().lower()  # B oszlop = spanyol ige
+        for row in ws.iter_rows(min_row=3):
+            cell_value = str(row[1].value).strip().lower()
             if cell_value == verb_es:
-                cell_d = row[3]  # D oszlop = stemPresente
-                font_color = cell_d.font.color
-
-                # Ha van szín és RGB típusú, akkor ellenőrizzük
-                if font_color and font_color.type == "rgb":
-                    return font_color.rgb.upper() == "FFFF0000"  # piros színkód
-                return False
-        return False
+                cell_c = row[2]
+                if cell_c:
+                    tags = str(cell_c.value).strip().lower().split(",")
+                    return [tag.strip() for tag in tags]
+                return []
+        return []
