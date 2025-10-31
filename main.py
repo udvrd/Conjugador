@@ -7,6 +7,7 @@ def output():
     verb = verb_entry.get().strip().lower()
 
     if verb.endswith("ni"):
+        conjugation_label.config(text="")
         verb_es = translate_hu_to_es(verb)
         if verb_es == "haber":
             result_label.config(

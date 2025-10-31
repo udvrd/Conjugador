@@ -43,12 +43,12 @@ class SpanishVerb:
         self.is_reflexive = self.infinitive.endswith("se")
         self.group = self._get_group()
         self.irregular = self._get_irregular_tags()
-        self.stemPresente = self._get_stemPresente()
+        self.stemPresente = self._get_stem_presente()
 
     def is_reflexive_verb(self):
         return self.is_reflexive
 
-    def _get_stemPresente(self):
+    def _get_stem_presente(self):
         infinitive = self.infinitive
         if self.is_reflexive:
             infinitive = infinitive[:-2]
