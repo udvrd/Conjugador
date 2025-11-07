@@ -1,4 +1,5 @@
 from openpyxl import load_workbook
+from stem_utils import apply_stem_shift
 
 
 def conjugate_presente(verb_es):
@@ -135,17 +136,20 @@ class SpanishVerb:
                 return s[:index] + "í" + s[index + 1:] if index != -1 else s
             stem_list = [apply_ii_shift(stem), apply_ii_shift(stem), apply_ii_shift(stem), stem, stem, apply_ii_shift(stem)]
             return stem_list
-        elif "eí" in self.irregular:
+#        elif "eí" in self.irregular:
             stem = infinitive[:-2]
             def apply_ei_shift(s):
                 index = s.rfind("e")
                 return s[:index] + "í" + s[index + 1:] if index != -1 else s
             stem_list = [apply_ei_shift(stem), apply_ei_shift(stem), apply_ei_shift(stem), stem, stem, apply_ei_shift(stem)]
             return stem_list
+        elif "eí" in self.irregular:
+            stem = infinitive[:-2]
+            stem_list = apply_stem_shift(stem, "e", "í", [0, 1, 2, 5])
+            return stem_list
         else:
             stem = infinitive[:-2]
             return [stem] * 6
-
 
     def _get_group(self):
         infinitive = self.infinitive
