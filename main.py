@@ -2,7 +2,6 @@ import tkinter as tk
 from translate import translate_hu_to_es, translate_es_to_hu
 from conjugate import conjugate_presente, SpanishVerb
 
-
 def output():
     verb = verb_entry.get().strip().lower()
 
@@ -67,3 +66,4 @@ conjugation_label.pack()
 
 # GUI futtatása
 window.mainloop()
+
