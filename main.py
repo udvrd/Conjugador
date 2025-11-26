@@ -10,14 +10,14 @@ def output():
         verb_es = translate_hu_to_es(verb)
         if verb_es == "haber":
             result_label.config(
-                text=f"Az ige spanyolul: haber. \nA haber létezést kifejező imperszonális ige, jelen időben csak egy alakban használatos: e/3 egyes szám → hay.", fg="black")
+                text=f"Az ige spanyolul: haber. \nAz haber létezést kifejező imperszonális ige, jelen időben csak egy alakban használatos: e/3 egyes szám → hay.", fg="black")
             return
         elif verb_es:
             result_label.config(text=f"Az ige spanyolul: {verb_es}", fg="black")
         else:
             result_label.config(text="Nincs fordítás az adatbázisban!", fg="red")
     elif verb == "haber":
-        result_label.config(text=f"Az ige magyarul: létezni. \nA haber létezést kifejező imperszonális ige, jelen időben csak egy alakban használatos: e/3 egyes szám → hay.", fg="black")
+        result_label.config(text=f"Az ige magyarul: létezni. \nAz haber létezést kifejező imperszonális ige, jelen időben csak egy alakban használatos: e/3 egyes szám → hay.", fg="black")
         return
     elif verb.endswith(("ar", "er", "ir", "ír", "arse", "erse", "irse", "írse")):
         verb_es = verb

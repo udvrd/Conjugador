@@ -6,26 +6,6 @@ def conjugate_presente(verb_es):
     verb = SpanishVerb(verb_es)
     persons = get_persons(verb)
     stem = verb.stemPresente
-    def get_endings(verb):
-        if verb.group == "ar":
-            if "oy" in verb.irregular:
-                if verb.stemPresente in ["v", "d"]:
-                    return ["oy", "as", "a", "amos", "ais", "an"]
-                else:
-                    return ["oy", "as", "a", "amos", "áis", "an"]
-            else:
-                return ["o", "as", "a", "amos", "áis", "an"]
-        elif verb.group == "er":
-            if "oy" in verb.irregular:
-                return ["oy", "es", "s", "omos", "ois", "on"]
-            elif "e" in verb.irregular:
-                return ["eo", "es", "e", "emos", "eis", "en"]
-            else:
-                return ["o", "es", "e", "emos", "éis", "en"]
-        elif verb.group == "ir":
-            if "eí" in verb.irregular:
-                return ["o", "es", "e", "ímos", "ís", "en"]
-            return ["o", "es", "e", "imos", "ís", "en"]
     endings = get_endings(verb)
 
     forms = [f"{person} {s}{ending}" for person, s, ending in zip(persons, stem, endings)]
@@ -152,3 +132,24 @@ class SpanishVerb:
                     return [tag.strip() for tag in tags]
                 return []
         return []
+
+def get_endings(verb):
+    if verb.group == "ar":
+        if "oy" in verb.irregular:
+            if verb.stemPresente in ["v", "d"]:
+                return ["oy", "as", "a", "amos", "ais", "an"]
+            else:
+                return ["oy", "as", "a", "amos", "áis", "an"]
+        else:
+            return ["o", "as", "a", "amos", "áis", "an"]
+    elif verb.group == "er":
+        if "oy" in verb.irregular:
+            return ["oy", "es", "s", "omos", "ois", "on"]
+        elif "e" in verb.irregular:
+            return ["eo", "es", "e", "emos", "eis", "en"]
+        else:
+            return ["o", "es", "e", "emos", "éis", "en"]
+    else:
+        if "eí" in verb.irregular:
+            return ["o", "es", "e", "ímos", "ís", "en"]
+        return ["o", "es", "e", "imos", "ís", "en"]
