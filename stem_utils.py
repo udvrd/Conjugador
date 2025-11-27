@@ -5,8 +5,8 @@ def apply_stem_shift(stem, from_char, to_char, positions):
 
     result = [shift(stem) if i in positions else stem for i in range(6)]
 
-    index = stem.rfind(from_char)
-    if index == 0:
+    position = stem.rfind(from_char)
+    if position == 0:
         for i in [0, 1, 2, 5]:
             result[i] = "h" + result[i]
 
