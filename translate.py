@@ -1,7 +1,7 @@
 import pandas as pd
 import re
 
-df = pd.read_excel("verbos.xlsx", sheet_name="verbos", skiprows=2, engine="openpyxl")
+df = pd.read_excel("verbos.xlsx", sheet_name="verbos", skiprows=1, engine="openpyxl")
 
 hu_to_es = {
     str(k).strip().lower(): str(v).strip()

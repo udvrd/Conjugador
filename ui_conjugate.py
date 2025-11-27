@@ -2,8 +2,8 @@ from openpyxl import load_workbook
 from stem_utils import apply_stem_shift
 
 
-def conjugate_presente(verb_es):
-    verb = SpanishVerb(verb_es)
+def ui_conjugate_presente(verb_es):
+    verb = UISpanishVerb(verb_es)
     persons = get_persons(verb)
     stem = verb.stemPresente
     endings = get_endings(verb)
@@ -17,7 +17,7 @@ def get_persons(verb):
     else:
         return ["yo", "tú", "él/ella", "nosotros", "vosotros", "ellos/ellas"]
 
-class SpanishVerb:
+class UISpanishVerb:
 
     def __init__(self, infinitive):
         self.infinitive = infinitive.strip().lower()
