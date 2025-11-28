@@ -3,11 +3,11 @@ Udvardi István - ZL8BUF
 
 Spanyol Igeragozó
 
-Ez a Pythonban készült program egy egyszerű grafikus felületen keresztül segít a spanyol igék jelen idejű ragozásában. A felhasználó magyarul vagy spanyolul is megadhat egy igét, a program pedig felismeri, lefordítja, majd kiírja a megfelelő ragozást, egyszerű vizuális visszajelzéssel kiegészítve.
+Ez a PyCharmbanban Python nyelven készült program egy egyszerű grafikus felületen keresztül segít a spanyol igék jelen idejű ragozásában. A felhasználó magyarul vagy spanyolul is megadhat egy igét, a program pedig felismeri, lefordítja, majd kiírja a megfelelő ragozást, egyszerű vizuális visszajelzéssel kiegészítve.
 
 Spanyol igeragozás röviden:
-A spanyol igéket három fő csoportba soroljuk a főnévi végződésük alapján: -ar, -er, -ir. A jelen idejű ragozás leveszi a végződést és a hat személyre egyedi végződést rendel a végződés alapján.
-Személyek: yo, tú, él/ella, nosotros, vosotros, ellos/ellas
+A spanyol igéket három fő csoportba soroljuk a főnévi végződésük alapján: -ar, -er, -ir. A jelen idejű ragozás leveszi a végződést(ar,er,ir) és a hat személyre(én, te, ő...) egyedi ragot rendel a végződés alapján.
+Személyes névmások: yo(én), tú(te), él/ella(ő), nosotros(mi), vosotros(ti), ellos/ellas(ők)
 Ragok:
 -ar esetén -o -as -a -amos -áis -an
 -er esetén -o -es -e -emos -éis -en
@@ -17,7 +17,7 @@ Rendhagyó igék esetén két fő eltérés fordulhat elő:
 Tőhangváltás: az igető magánhangzója megváltozik (pl. pensar → pienso, e → ie)
 Ragváltozás: a szabályos rag helyett módosított alak jelenik meg (pl. tener → tengo)
 
-Az igék ragozása a https://www.e-spanyol.hu/igeragozas.php weboldalon ellenőrizhető. 
+Az igék ragozása a https://www.e-spanyol.hu/igeragozas.php weboldalon ellenőrizhető.
 
 Beépített függvények:
 tkinter: Beépített GUI-könyvtár, a grafikus felület (ablak, gombok, beviteli mezők, vászon) megjelenítéséhez és kezeléséhez.
@@ -36,12 +36,12 @@ output():
 A fő vezérlőfüggvény, amely:
 Beolvassa a beírt igét
 Eldönti, hogy magyar vagy spanyol ige-e
-Lefordítja az igét (ha szükséges)
+Lefordítja az igét (translate függvényekkel)
 Külön kezeli az haber imperszonális igét
 Meghívja a ragozómodult (ui_conjugate_presente)
 Megjeleníti a ragozást és a megfelelő arckifejezést (mosolygó, szomorú vagy gondolkodó smiley)
 insert_nh(): Egyetlen „ñ” karaktert szúr be a beviteli mezőbe, és visszaadja a fókuszt a mezőnek (ha spanyolul szeretnénk megadni az igét és szükség lenne a betűre)
-gombok:
+Objektumokok:
 tk.Entry	Ige beviteli mező
 tk.Button	„Ragozás” gomb, „ñ” gomb és "Kilépés" gomb
 tk.Label	Eredmény és ragozás megjelenítése

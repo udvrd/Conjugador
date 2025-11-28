@@ -37,8 +37,10 @@ class UISpanishVerb:
             return ["v"] * 6
         elif infinitive == "ser":
             return ["s", "er", "e", "s", "s", "s"]
-        if infinitive == "caber":
+        elif infinitive == "caber":
             return ["quep"] + [infinitive[:-2]] * 5
+        elif infinitive == "saber":
+            return ["s"] + [infinitive[:-2]] * 5
         elif "ig" in self.irregular:
             stem = infinitive[:-2]
             if "y" in self.irregular:
@@ -102,6 +104,10 @@ class UISpanishVerb:
             stem = infinitive[:-2]
             stem_list = apply_stem_shift(stem, "e", "í", [0, 1, 2, 5])
             return stem_list
+        elif "uue" in self.irregular:
+            stem = infinitive[:-2]
+            stem_list = apply_stem_shift(stem, "u", "ue", [0, 1, 2, 5])
+            return stem_list
         else:
             stem = infinitive[:-2]
             return [stem] * 6
@@ -147,6 +153,8 @@ def get_endings(verb):
             return ["oy", "es", "s", "omos", "ois", "on"]
         elif "e" in verb.irregular:
             return ["eo", "es", "e", "emos", "eis", "en"]
+        elif verb.infinitive=="saber":
+            return ["é", "es", "e", "emos", "eis", "en"]
         else:
             return ["o", "es", "e", "emos", "éis", "en"]
     else:
