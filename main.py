@@ -52,7 +52,7 @@ def insert_nh():
     verb_entry.focus_set()
 
 window = tk.Tk()
-window.title("Spanyol Igeragozó")
+window.title("Spanyol Igeragozó - Udvardi István, ZL8BUF - DUEL-ISR-116-HU_2025-2026-1")
 window.geometry("600x300")
 
 tk.Label(window, text="Kérem adja meg a ragozni kívánt igét főnévi igenév alakban(enni, olvasni):").pack(pady=5)

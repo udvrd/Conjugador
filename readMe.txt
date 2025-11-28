@@ -4,6 +4,7 @@ Udvardi István - ZL8BUF
 Spanyol Igeragozó
 
 Ez a PyCharmbanban Python nyelven készült program egy egyszerű grafikus felületen keresztül segít a spanyol igék jelen idejű ragozásában. A felhasználó magyarul vagy spanyolul is megadhat egy igét, a program pedig felismeri, lefordítja, majd kiírja a megfelelő ragozást, egyszerű vizuális visszajelzéssel kiegészítve.
+FONTOS! A program főnévi igeneveket ismer fel, ami magyarban a -ni végződés (enni, inni); spanyolban az -ar -er -ir végződés (pensar, tener, resistir). Ragozott alakokat a program nem ismer fel! (magyar: eszik, nevet; spanyol: comprendo, estas)
 
 Spanyol igeragozás röviden:
 A spanyol igéket három fő csoportba soroljuk a főnévi végződésük alapján: -ar, -er, -ir. A jelen idejű ragozás leveszi a végződést(ar,er,ir) és a hat személyre(én, te, ő...) egyedi ragot rendel a végződés alapján.
@@ -12,12 +13,12 @@ Ragok:
 -ar esetén -o -as -a -amos -áis -an
 -er esetén -o -es -e -emos -éis -en
 -ir esetén -o -es -e -imos -ís -en
-A visszaható(reflexív) igék a főnévi igenévként se végződést kapnak, ami azt jelzi, hogy a cselekvés visszahat az alanyra: vestir=öltöztetni, vestirse=öltözni, mint önmagát öltöztetni. Ragozásnál annyit számít, hogy az ige elé megjelenik a visszaható névmás, ami: me, te se, nos, os, se.
+A visszaható(reflexív) igék a főnévi igenévként "se" végződést kapnak, ami azt jelzi, hogy a cselekvés visszahat az alanyra: vestir=öltöztetni, vestirse=öltözni, mint önmagát öltöztetni. Ragozásnál annyit számít, hogy az ige elé megjelenik a visszaható névmás, ami: me, te se, nos, os, se.
 Rendhagyó igék esetén két fő eltérés fordulhat elő:
 Tőhangváltás: az igető magánhangzója megváltozik (pl. pensar → pienso, e → ie)
 Ragváltozás: a szabályos rag helyett módosított alak jelenik meg (pl. tener → tengo)
 
-Az igék ragozása a https://www.e-spanyol.hu/igeragozas.php weboldalon ellenőrizhető.
+Az igék ragozásának helyessége a https://www.e-spanyol.hu/igeragozas.php weboldalon ellenőrizhető.
 
 Beépített függvények:
 tkinter: Beépített GUI-könyvtár, a grafikus felület (ablak, gombok, beviteli mezők, vászon) megjelenítéséhez és kezeléséhez.
@@ -62,7 +63,7 @@ stem_utils.py:
 Ez a modul a spanyol igék szótövének módosításáért felelős a tőhangváltós igék esetében. Megkeresi a keresett betűből az utolsót és lecseréli a kívánt betű(k)re a megadott személyeknél (tőhangváltás esetén T/1 és T/2 személyeknél az eredeti alak marad). Van egy plusz szabály az oler ige miatt (szagolni, szagot árasztani), ami tőhangváltós, de mivel az első karakter változik, így bekerül egy +h betű az ige elejére.
 
 ui_conjugate.py:
-A program lelke, a ragozómodul. Ez a modul felelős a spanyol igék jelen idejű ragozásáért, beleértve a szabályos és rendhagyó igéket is. A ragozás logikája az ige szótövének és a megfelelő személyragoknak és személyeknek az összeillesztésén alapul.
+A program lelke, a ragozómodul. Ez a modul felelős a spanyol igék jelen idejű ragozásáért, beleértve a szabályos és rendhagyó igéket is. A ragozás logikája az ige szótövének és a megfelelő személyragoknak és személyes névmásoknak az összeillesztésén alapul.
 Osztály:
 UISpanishVerb
 Ez az osztály reprezentál egy spanyol igét, és előkészíti a ragozáshoz szükséges adatokat.
@@ -85,5 +86,7 @@ Lekéri a személyeket (yo, tú, stb.)
 Összeállítja a ragozott alakokat: személy + szótő + rag
 get_persons(verb) Visszaadja a személyes névmásokat, reflexív igék esetén a visszaható névmásokat is hozzáadja
 get_endings(verb) Visszaadja a megfelelő jelen idejű személyragokat az ige csoportja és rendhagyósága alapján, kezeli az olyan különleges ragokat is, mint oy, eo, ímos, stb.
+
+Megjegyzés: ha egy beírt szó a végződés szerint spanyol igének tűnik, de nincs a szótárban akkor a program szabályos (nem rendhagyó) igeként leragozza, felhívva a figyelmet hogy ez lehetséges ragozás.
 
 
